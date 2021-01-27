@@ -5,8 +5,8 @@ class BreadthFirstPaths:
         self.marked = []
         self.edgeTo = []
         self.paths = []
-        self.__bfs(graph)
-        self.__findPaths(graph)
+        self.__breadthFirstSearch(graph)
+        self.__setPaths(graph)
         
     def getPaths(self):
         pathStrings = []
@@ -23,37 +23,32 @@ class BreadthFirstPaths:
             pathStrings.append(directions)
         return pathStrings
         
-    def __bfs(self, graph):
+    def __breadthFirstSearch(self, graph):
         adjacencyList = graph.getAdjacencyList()
         startIndex = graph.getEndPoints()['S'][0]
-        queue = []
-        queue.append(startIndex)
+        queue = [startIndex]
         self.__addMark(startIndex)
         while len(queue) > 0:
             currentPointIndex = queue.pop(0)
-            for adjacency in adjacencyList[currentPointIndex][1]:
-                try:
-                    if not self.marked[adjacency]:
-                        queue.append(adjacency)
-                        self.__addMark(adjacency)
-                        self.__addEdge(adjacency, currentPointIndex)
-                except:
+            currentAdjacencies = adjacencyList[currentPointIndex][1]
+            for adjacency in currentAdjacencies:
+                if self.__isUnmarked(adjacency):
                     queue.append(adjacency)
                     self.__addMark(adjacency)
                     self.__addEdge(adjacency, currentPointIndex)
 
-    def __findPaths(self, graph):
+    def __setPaths(self, graph):
         endPoints = graph.getEndPoints()
         adjacencyList = graph.getAdjacencyList()
-        for finish in endPoints['F']:
-            path = [(finish, adjacencyList[finish][0])]
-            pointBefore = self.edgeTo[finish]
+        for finishIndex in endPoints['F']:
+            path = [(finishIndex, self.getPointXY(finishIndex, adjacencyList))]
+            nextIndex = self.edgeTo[finishIndex]
             while True:
-                if pointBefore is None:
+                if nextIndex is None:
                     break
-                path.append((pointBefore, adjacencyList[pointBefore][0]))
-                pointBefore = self.edgeTo[pointBefore]
-            if path[-1][0] == endPoints['S'][0]:
+                path.append((nextIndex, self.getPointXY(nextIndex, adjacencyList)))
+                nextIndex = self.edgeTo[nextIndex]
+            if self.__isPathComplete(path, endPoints):
                 path.reverse()
                 self.paths.append(path)
 
@@ -66,7 +61,17 @@ class BreadthFirstPaths:
         while len(self.edgeTo) <= adjacency:
             self.edgeTo.append(None)
         self.edgeTo[adjacency] = pointIndex
+    
+    def __isUnmarked(self, adjacency):
+        return len(self.marked) <= adjacency or not self.marked[adjacency]
 
+    @staticmethod
+    def getPointXY(index, adjacencyList):
+        return adjacencyList[index][0]
+    
+    @staticmethod
+    def __isPathComplete(path, endPoints):
+        return path[-1][0] == endPoints['S'][0]
 
 if __name__ == '__main__':
     import csv

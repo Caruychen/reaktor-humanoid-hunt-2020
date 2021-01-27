@@ -1,10 +1,6 @@
 class NeuralStrand:
     def __init__(self, inputLine=''):
-        try:
-            self.setStrand(inputLine)
-        except:
-            self.start = None
-            self.path = None
+        self.setStrand(inputLine)
 
     def setStrand(self, inputLine):
         splitLine = inputLine.strip().split(' ')

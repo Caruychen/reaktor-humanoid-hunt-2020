@@ -1,12 +1,13 @@
 from pathmatrix import PathMatrix
 from adjacencylist import AdjacencyList
+from endpoints import EndPoints
 from coordinate import Coordinate
 
 class Graph:
-    def __init__(self, adjacencyList=[], endPoints={}):
+    def __init__(self):
         self.adjacencyList = AdjacencyList()
         self.pathMatrix = PathMatrix()
-        self.endPoints = endPoints
+        self.endPoints = EndPoints()
 
     def setGraph(self, neuralStrand):
         startPoint = Coordinate(neuralStrand.getX(), neuralStrand.getY())
@@ -27,7 +28,8 @@ class Graph:
                 point = point.getAdjacent(step)
                 self.addPointToGraph(point)
             except:
-                self.__addToEndPoints(step, point)
+                pointIndex = self.pathMatrix.getPoint(point)
+                self.endPoints.setEndPoint(step, pointIndex)
 
     def getPathMatrix(self):
         return self.pathMatrix.getMatrix()
@@ -35,12 +37,8 @@ class Graph:
     def getAdjacencyList(self):
         return self.adjacencyList.getList()
 
-    def __addToEndPoints(self, step, point):
-        if step not in self.endPoints:
-            self.endPoints[step] = [self.pathMatrix.getPoint(point)]
-        else:
-            if self.pathMatrix.getPoint(point) not in self.endPoints[step]:
-                self.endPoints[step].append(self.pathMatrix.getPoint(point))
+    def getEndPoints(self):
+        return self.endPoints.getEndPoints()
 
 if __name__ == '__main__':
     from neuralstrand import NeuralStrand
@@ -57,6 +55,7 @@ if __name__ == '__main__':
     for adj in graph.getAdjacencyList():
         if len(adj[1]) > 4:
             print(adj)
+    print(graph.getEndPoints())
    
     with open('testFile.csv', mode='w') as testFile:
         fileWriter = csv.writer(testFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)

@@ -17,9 +17,9 @@ class Graph:
     def addPointToGraph(self, xCoord, yCoord):
         self.pathMatrix.expandToXY(xCoord, yCoord)
         if self.pathMatrix.getPoint(xCoord, yCoord) == None:
-            self.pathMatrix.setPoint(xCoord, yCoord, len(self.adjacencyList))
+            self.pathMatrix.setPoint(xCoord, yCoord, len(self.adjacencyList.getList()))
             self.adjacencyList.setPoint(xCoord, yCoord)
-            self.adjacencyList.setAdjacencies(xCoord, yCoord, self.pathMatrix.getMatrix())
+            self.adjacencyList.setAdjacencies(xCoord, yCoord, self.pathMatrix)
     
     def addPathToGraph(self, path, xCoord, yCoord):
         for step in path:
@@ -31,6 +31,9 @@ class Graph:
 
     def getPathMatrix(self):
         return self.pathMatrix.getMatrix()
+    
+    def getAdjacencyList(self):
+        return self.adjacencyList.getList()
 
     def __addToEndPoints(self, step, xCoord, yCoord):
         if step not in self.endPoints:
@@ -38,26 +41,6 @@ class Graph:
         else:
             if self.pathMatrix.getPoint(xCoord, yCoord) not in self.endPoints[step]:
                 self.endPoints[step].append(self.pathMatrix.getPoint(xCoord, yCoord))
-
-    # def __addPointToAdjacencyList(self, xCoord, yCoord):
-    #         self.adjacencyList.append([(xCoord, yCoord), []])
-    
-    # def __findPointAdjacencies(self, xCoord, yCoord):
-    #     directions = ['D','U','R','L']
-    #     for direction in directions:
-    #         currentPoint = len(self.adjacencyList) - 1
-    #         xAdjacent, yAdjacent = self.__parseDirections(direction, xCoord, yCoord)
-    #         try:
-    #             if xAdjacent > 0 and yAdjacent > 0:
-    #                 adjacentPoint = self.pathMatrix.getPoint(xAdjacent, yAdjacent)
-    #                 if adjacentPoint != None:
-    #                     self.__addEdge(currentPoint, adjacentPoint)
-    #         except:
-    #             pass
-
-    # def __addEdge(self, currentPoint, adjacentPoint):
-    #     self.adjacencyList[currentPoint][1].append(adjacentPoint)
-    #     self.adjacencyList[adjacentPoint][1].append(currentPoint)
 
     @staticmethod
     def __parseDirections(d, x, y):

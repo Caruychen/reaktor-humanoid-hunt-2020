@@ -26,6 +26,7 @@ if __name__ == '__main__':
     for line in f:
         strand = NeuralStrand()
         strand.setStrand(line)
-        strands.append(strand.start)
-    print(strands)
+        strands.append(strand)
+    print(strands[0].start)
+    print(strands[0].path)
     

@@ -1,5 +1,6 @@
 from pathmatrix import PathMatrix
 from adjacencylist import AdjacencyList
+from coordinate import Coordinate
 
 class Graph:
     def __init__(self, adjacencyList=[], endPoints={}):
@@ -8,26 +9,25 @@ class Graph:
         self.endPoints = endPoints
 
     def setGraph(self, neuralStrand):
-        xCoord = neuralStrand.getX()
-        yCoord = neuralStrand.getY()
+        point = Coordinate(neuralStrand.getX(), neuralStrand.getY())
         path = neuralStrand.getPath()
-        self.addPointToGraph(xCoord, yCoord)
-        self.addPathToGraph(path, xCoord, yCoord)
+        self.addPointToGraph(point)
+        self.addPathToGraph(path, point)
     
-    def addPointToGraph(self, xCoord, yCoord):
-        self.pathMatrix.expandToXY(xCoord, yCoord)
-        if self.pathMatrix.getPoint(xCoord, yCoord) == None:
-            self.pathMatrix.setPoint(xCoord, yCoord, len(self.adjacencyList.getList()))
-            self.adjacencyList.setPoint(xCoord, yCoord)
-            self.adjacencyList.setAdjacencies(xCoord, yCoord, self.pathMatrix)
+    def addPointToGraph(self, point):
+        self.pathMatrix.expandToXY(point)
+        if self.pathMatrix.getPoint(point) == None:
+            self.pathMatrix.setPoint(point, len(self.adjacencyList.getList()))
+            self.adjacencyList.setPoint(point)
+            self.adjacencyList.setAdjacencies(point, self.pathMatrix)
     
-    def addPathToGraph(self, path, xCoord, yCoord):
+    def addPathToGraph(self, path, point):
         for step in path:
             try:
-                xCoord, yCoord = self.__parseDirections(step, xCoord, yCoord)
-                self.addPointToGraph(xCoord, yCoord)
+                point = point.getAdjacent(step)
+                self.addPointToGraph(point)
             except:
-                self.__addToEndPoints(step, xCoord, yCoord)
+                self.__addToEndPoints(step, point)
 
     def getPathMatrix(self):
         return self.pathMatrix.getMatrix()
@@ -35,20 +35,21 @@ class Graph:
     def getAdjacencyList(self):
         return self.adjacencyList.getList()
 
-    def __addToEndPoints(self, step, xCoord, yCoord):
+    def __addToEndPoints(self, step, point):
         if step not in self.endPoints:
-            self.endPoints[step] = [self.pathMatrix.getPoint(xCoord, yCoord)]
+            self.endPoints[step] = [self.pathMatrix.getPoint(point)]
         else:
-            if self.pathMatrix.getPoint(xCoord, yCoord) not in self.endPoints[step]:
-                self.endPoints[step].append(self.pathMatrix.getPoint(xCoord, yCoord))
+            if self.pathMatrix.getPoint(point) not in self.endPoints[step]:
+                self.endPoints[step].append(self.pathMatrix.getPoint(point))
 
     @staticmethod
-    def __parseDirections(d, x, y):
+    def __parseDirections(d, point):
+        x, y = point.getX(), point.getY()
         directions = {
-            'D': [x, y + 1],
-            'U': [x, y - 1],
-            'R': [x + 1, y],
-            'L': [x - 1, y]
+            'D': Coordinate(x, y + 1),
+            'U': Coordinate(x, y - 1),
+            'R': Coordinate(x + 1, y),
+            'L': Coordinate(x - 1, y)
         }
         return directions[d]
 

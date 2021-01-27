@@ -2,28 +2,30 @@ class AdjacencyList:
     def __init__(self):
         self.adjacencyList = []
     
-    def setPoint(self, x, y):
+    def setPoint(self, point):
+        x, y = point.getX(), point.getY()
         self.adjacencyList.append([(x, y), []])
 
-    def setAdjacencies(self, x, y, pathMatrix):
+    def setAdjacencies(self, point, pathMatrix):
         directions = ['D','U','R','L']
-        currentPoint = len(self.adjacencyList) - 1
+        currentPointIndex = len(self.adjacencyList) - 1
+        x, y = point.getX(), point.getY()
         for direction in directions:
             xAdjacent, yAdjacent = self.__parseDirections(direction, x, y)
             try:
                 if xAdjacent > 0 and yAdjacent > 0:
                     adjacentPoint = pathMatrix.getPoint(xAdjacent, yAdjacent)
                     if adjacentPoint != None:
-                        self.__addEdge(currentPoint, adjacentPoint)
+                        self.__addEdge(currentPointIndex, adjacentPoint)
             except:
                 pass
     
     def getList(self):
         return self.adjacencyList
 
-    def __addEdge(self, currentPoint, adjacentPoint):
-        self.adjacencyList[currentPoint][1].append(adjacentPoint)
-        self.adjacencyList[adjacentPoint][1].append(currentPoint)
+    def __addEdge(self, currentPointIndex, adjacentPoint):
+        self.adjacencyList[currentPointIndex][1].append(adjacentPoint)
+        self.adjacencyList[adjacentPoint][1].append(currentPointIndex)
 
     @staticmethod
     def __parseDirections(d, x, y):

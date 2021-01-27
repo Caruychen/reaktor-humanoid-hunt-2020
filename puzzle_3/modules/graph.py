@@ -1,7 +1,9 @@
+from pathmatrix import PathMatrix
+
 class Graph:
-    def __init__(self, adjacencyList=[], pathMatrix=[], endPoints={}):
+    def __init__(self, adjacencyList=[], endPoints={}):
         self.adjacencyList = adjacencyList
-        self.pathMatrix = pathMatrix
+        self.pathMatrix = PathMatrix()
         self.endPoints = endPoints
 
     def setGraph(self, neuralStrand):
@@ -12,9 +14,9 @@ class Graph:
         self.addPathToGraph(path, xCoord, yCoord)
     
     def addPointToGraph(self, xCoord, yCoord):
-        self.__expandPathMatrixToXYPoints(xCoord, yCoord)
-        if self.pathMatrix[yCoord][xCoord] == None:
-            self.__addPointToPathMatrix(xCoord, yCoord)
+        self.pathMatrix.expandToXY(xCoord, yCoord)
+        if self.pathMatrix.getPoint(xCoord, yCoord) == None:
+            self.pathMatrix.setPoint(xCoord, yCoord, len(self.adjacencyList))
             self.__addPointToAdjacencyList(xCoord, yCoord)
             self.__findPointAdjacencies(xCoord, yCoord)
     
@@ -28,13 +30,10 @@ class Graph:
     
     def __addToEndPoints(self, step, xCoord, yCoord):
         if step not in self.endPoints:
-            self.endPoints[step] = [self.pathMatrix[yCoord][xCoord]]
+            self.endPoints[step] = [self.pathMatrix.getPoint(xCoord, yCoord)]
         else:
-            if self.pathMatrix[yCoord][xCoord] not in self.endPoints[step]:
-                self.endPoints[step].append(self.pathMatrix[yCoord][xCoord])
-
-    def __addPointToPathMatrix(self, xCoord, yCoord):
-            self.pathMatrix[yCoord][xCoord] = len(self.adjacencyList)
+            if self.pathMatrix.getPoint(xCoord, yCoord) not in self.endPoints[step]:
+                self.endPoints[step].append(self.pathMatrix.getPoint(xCoord, yCoord))
 
     def __addPointToAdjacencyList(self, xCoord, yCoord):
             self.adjacencyList.append([(xCoord, yCoord), []])
@@ -46,7 +45,7 @@ class Graph:
             xAdjacent, yAdjacent = self.__parseDirections(direction, xCoord, yCoord)
             try:
                 if xAdjacent > 0 and yAdjacent > 0:
-                    adjacentPoint = self.pathMatrix[yAdjacent][xAdjacent]
+                    adjacentPoint = self.pathMatrix.getPoint(xAdjacent, yAdjacent)
                     if adjacentPoint != None:
                         self.__addEdge(currentPoint, adjacentPoint)
             except:
@@ -55,12 +54,6 @@ class Graph:
     def __addEdge(self, currentPoint, adjacentPoint):
         self.adjacencyList[currentPoint][1].append(adjacentPoint)
         self.adjacencyList[adjacentPoint][1].append(currentPoint)
-
-    def __expandPathMatrixToXYPoints(self, xCoord, yCoord):
-        while len(self.pathMatrix) <= yCoord:
-            self.pathMatrix.append([])
-        while len(self.pathMatrix[yCoord]) <= xCoord:
-            self.pathMatrix[yCoord].append(None)
 
     @staticmethod
     def __parseDirections(d, x, y):
@@ -87,4 +80,4 @@ if __name__ == '__main__':
     with open('testFile.csv', mode='w') as testFile:
         fileWriter = csv.writer(testFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-        fileWriter.writerows(graph.pathMatrix)
+        fileWriter.writerows(graph.pathMatrix.pathMatrix)

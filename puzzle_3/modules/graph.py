@@ -4,48 +4,46 @@ class Graph:
         self.pathMatrix = pathMatrix
         self.endPoints = endPoints
 
-    def addToGraph(self, neuralStrand):
+    def setGraph(self, neuralStrand):
         xCoord = neuralStrand.getX()
         yCoord = neuralStrand.getY()
         path = neuralStrand.getPath()
+        self.addPointToGraph(xCoord, yCoord)
+        self.addPathToGraph(path, xCoord, yCoord)
+    
+    def addPointToGraph(self, xCoord, yCoord):
         self.__expandPathMatrixToXYPoints(xCoord, yCoord)
         if self.pathMatrix[yCoord][xCoord] == None:
-            self.addPointToPathMatrix(xCoord, yCoord)
-            self.addPointToAdjacencyList(xCoord, yCoord)
+            self.__addPointToPathMatrix(xCoord, yCoord)
+            self.__addPointToAdjacencyList(xCoord, yCoord)
             self.__findPointAdjacencies(xCoord, yCoord)
-        directions = {
-            'D': self.moveDown,
-            'U': self.moveUp,
-            'R': self.moveRight,
-            'L': self.moveLeft
-        }
+    
+    def addPathToGraph(self, path, xCoord, yCoord):
         for step in path:
             try:
-                xCoord, yCoord = directions[step](xCoord, yCoord)
-                self.__expandPathMatrixToXYPoints(xCoord, yCoord)
-                if self.pathMatrix[yCoord][xCoord] == None:
-                    self.addPointToPathMatrix(xCoord, yCoord)
-                    self.addPointToAdjacencyList(xCoord, yCoord)
-                    self.__findPointAdjacencies(xCoord, yCoord)
+                xCoord, yCoord = self.__parseDirections(step, xCoord, yCoord)
+                self.addPointToGraph(xCoord, yCoord)
             except:
-                pass
+                self.__addToEndPoints(step, xCoord, yCoord)
+    
+    def __addToEndPoints(self, step, xCoord, yCoord):
+        if step not in self.endPoints:
+            self.endPoints[step] = [self.pathMatrix[yCoord][xCoord]]
+        else:
+            if self.pathMatrix[yCoord][xCoord] not in self.endPoints[step]:
+                self.endPoints[step].append(self.pathMatrix[yCoord][xCoord])
 
-    def addPointToPathMatrix(self, xCoord, yCoord):
+    def __addPointToPathMatrix(self, xCoord, yCoord):
             self.pathMatrix[yCoord][xCoord] = len(self.adjacencyList)
 
-    def addPointToAdjacencyList(self, xCoord, yCoord):
+    def __addPointToAdjacencyList(self, xCoord, yCoord):
             self.adjacencyList.append([(xCoord, yCoord), []])
     
     def __findPointAdjacencies(self, xCoord, yCoord):
-        directions = {
-            'D': self.moveDown,
-            'U': self.moveUp,
-            'R': self.moveRight,
-            'L': self.moveLeft
-        }
+        directions = ['D','U','R','L']
         for direction in directions:
             currentPoint = len(self.adjacencyList) - 1
-            xAdjacent, yAdjacent = directions[direction](xCoord, yCoord)
+            xAdjacent, yAdjacent = self.__parseDirections(direction, xCoord, yCoord)
             try:
                 if xAdjacent > 0 and yAdjacent > 0:
                     adjacentPoint = self.pathMatrix[yAdjacent][xAdjacent]
@@ -63,31 +61,28 @@ class Graph:
             self.pathMatrix.append([])
         while len(self.pathMatrix[yCoord]) <= xCoord:
             self.pathMatrix[yCoord].append(None)
-    
+
     @staticmethod
-    def moveDown(x, y):
-        return x, y + 1
-    @staticmethod 
-    def moveUp(x, y):
-        return x, y - 1
-    @staticmethod
-    def moveRight(x, y):
-        return x + 1, y
-    @staticmethod
-    def moveLeft(x, y):
-        return x - 1, y
+    def __parseDirections(d, x, y):
+        directions = {
+            'D': [x, y + 1],
+            'U': [x, y - 1],
+            'R': [x + 1, y],
+            'L': [x - 1, y]
+        }
+        return directions[d]
 
 if __name__ == '__main__':
-    import neuralstrand
+    from neuralstrand import NeuralStrand
     import csv
     f = open("puzzle3.txt", "r")
     strands = []
     for line in f:
-        strand = neuralstrand.NeuralStrand(line)
+        strand = NeuralStrand(line)
         strands.append(strand)
     graph = Graph()
     for strand in strands:
-        graph.addToGraph(strand)
+        graph.setGraph(strand)
 
     with open('testFile.csv', mode='w') as testFile:
         fileWriter = csv.writer(testFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)

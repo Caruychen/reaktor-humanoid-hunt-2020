@@ -8,25 +8,37 @@ class NeuralStrand:
 
     def setStrand(self, inputLine):
         splitLine = inputLine.strip().split(' ')
-        self.setStart(splitLine)
-        self.setPath(splitLine)
+        self.__setStart(splitLine)
+        self.__setPath(splitLine)
 
-    def setStart(self, splitLine):
+    def __setStart(self, splitLine):
         self.start = [int(coordinate) for coordinate in splitLine[0].split(',')]
     
-    def setPath(self, splitLine):
+    def __setPath(self, splitLine):
         try:
             self.path = splitLine[1].split(',')
         except:
             self.path = ''
+    
+    def getStart(self):
+        return self.start
+    
+    def getPath(self):
+        return self.path
+
+    def getX(self):
+        return self.start[0]
+    
+    def getY(self):
+        return self.start[1]
 
 if __name__ == '__main__':
     f = open("puzzle3.txt", "r")
     strands = []
     for line in f:
-        strand = NeuralStrand()
-        strand.setStrand(line)
+        strand = NeuralStrand(line)
         strands.append(strand)
-    print(strands[0].start)
-    print(strands[0].path)
+    print(strands[0].getStart())
+    print(strands[0].getPath())
+    print(strands[0].getX(), strands[0].getY())
     

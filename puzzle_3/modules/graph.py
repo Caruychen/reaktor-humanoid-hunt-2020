@@ -55,7 +55,6 @@ if __name__ == '__main__':
     for adj in graph.getAdjacencyList():
         if len(adj[1]) > 4:
             print(adj)
-    print(graph.getEndPoints())
    
     with open('testFile.csv', mode='w') as testFile:
         fileWriter = csv.writer(testFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)

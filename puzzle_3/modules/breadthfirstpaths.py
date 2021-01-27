@@ -72,11 +72,14 @@ if __name__ == '__main__':
     import csv
     from neuralstrand import NeuralStrand
     from graph import Graph
+
     f = open("puzzle3.txt", "r")
+
     strands = []
     for line in f:
         strand = NeuralStrand(line)
         strands.append(strand)
+        
     graph = Graph()
     for strand in strands:
         graph.setGraph(strand)

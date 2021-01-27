@@ -13,3 +13,6 @@ class PathMatrix:
 
     def getPoint(self, x, y):
         return self.pathMatrix[y][x]
+    
+    def getMatrix(self):
+        return self.pathMatrix

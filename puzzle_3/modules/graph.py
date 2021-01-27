@@ -27,7 +27,10 @@ class Graph:
                 self.addPointToGraph(xCoord, yCoord)
             except:
                 self.__addToEndPoints(step, xCoord, yCoord)
-    
+
+    def getPathMatrix(self):
+        return self.pathMatrix.getMatrix()
+
     def __addToEndPoints(self, step, xCoord, yCoord):
         if step not in self.endPoints:
             self.endPoints[step] = [self.pathMatrix.getPoint(xCoord, yCoord)]
@@ -76,7 +79,7 @@ if __name__ == '__main__':
     graph = Graph()
     for strand in strands:
         graph.setGraph(strand)
-
+   
     with open('testFile.csv', mode='w') as testFile:
         fileWriter = csv.writer(testFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 

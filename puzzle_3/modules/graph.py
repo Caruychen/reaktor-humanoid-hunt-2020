@@ -1,8 +1,9 @@
 from pathmatrix import PathMatrix
+from adjacencylist import AdjacencyList
 
 class Graph:
     def __init__(self, adjacencyList=[], endPoints={}):
-        self.adjacencyList = adjacencyList
+        self.adjacencyList = AdjacencyList()
         self.pathMatrix = PathMatrix()
         self.endPoints = endPoints
 
@@ -17,8 +18,8 @@ class Graph:
         self.pathMatrix.expandToXY(xCoord, yCoord)
         if self.pathMatrix.getPoint(xCoord, yCoord) == None:
             self.pathMatrix.setPoint(xCoord, yCoord, len(self.adjacencyList))
-            self.__addPointToAdjacencyList(xCoord, yCoord)
-            self.__findPointAdjacencies(xCoord, yCoord)
+            self.adjacencyList.setPoint(xCoord, yCoord)
+            self.adjacencyList.setAdjacencies(xCoord, yCoord, self.pathMatrix.getMatrix())
     
     def addPathToGraph(self, path, xCoord, yCoord):
         for step in path:
@@ -38,25 +39,25 @@ class Graph:
             if self.pathMatrix.getPoint(xCoord, yCoord) not in self.endPoints[step]:
                 self.endPoints[step].append(self.pathMatrix.getPoint(xCoord, yCoord))
 
-    def __addPointToAdjacencyList(self, xCoord, yCoord):
-            self.adjacencyList.append([(xCoord, yCoord), []])
+    # def __addPointToAdjacencyList(self, xCoord, yCoord):
+    #         self.adjacencyList.append([(xCoord, yCoord), []])
     
-    def __findPointAdjacencies(self, xCoord, yCoord):
-        directions = ['D','U','R','L']
-        for direction in directions:
-            currentPoint = len(self.adjacencyList) - 1
-            xAdjacent, yAdjacent = self.__parseDirections(direction, xCoord, yCoord)
-            try:
-                if xAdjacent > 0 and yAdjacent > 0:
-                    adjacentPoint = self.pathMatrix.getPoint(xAdjacent, yAdjacent)
-                    if adjacentPoint != None:
-                        self.__addEdge(currentPoint, adjacentPoint)
-            except:
-                pass
+    # def __findPointAdjacencies(self, xCoord, yCoord):
+    #     directions = ['D','U','R','L']
+    #     for direction in directions:
+    #         currentPoint = len(self.adjacencyList) - 1
+    #         xAdjacent, yAdjacent = self.__parseDirections(direction, xCoord, yCoord)
+    #         try:
+    #             if xAdjacent > 0 and yAdjacent > 0:
+    #                 adjacentPoint = self.pathMatrix.getPoint(xAdjacent, yAdjacent)
+    #                 if adjacentPoint != None:
+    #                     self.__addEdge(currentPoint, adjacentPoint)
+    #         except:
+    #             pass
 
-    def __addEdge(self, currentPoint, adjacentPoint):
-        self.adjacencyList[currentPoint][1].append(adjacentPoint)
-        self.adjacencyList[adjacentPoint][1].append(currentPoint)
+    # def __addEdge(self, currentPoint, adjacentPoint):
+    #     self.adjacencyList[currentPoint][1].append(adjacentPoint)
+    #     self.adjacencyList[adjacentPoint][1].append(currentPoint)
 
     @staticmethod
     def __parseDirections(d, x, y):

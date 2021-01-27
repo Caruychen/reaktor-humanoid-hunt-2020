@@ -23,16 +23,3 @@ class Coordinate:
             'L': Coordinate(self.x - 1, self.y)
         }
         return directions[d]
-
-# class AdjacentCoordinates(Coordinate):
-#     def __init__(self, x, y):
-#         super().__init__(x, y)
-
-#     def getAdjacent(d):
-#         directions = {
-#             'D': Coordinate(x, y + 1),
-#             'U': Coordinate(x, y - 1),
-#             'R': Coordinate(x + 1, y),
-#             'L': Coordinate(x - 1, y)
-#         }
-#         return directions[d]

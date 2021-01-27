@@ -9,30 +9,19 @@ class AdjacencyList:
     def setAdjacencies(self, point, pathMatrix):
         directions = ['D','U','R','L']
         currentPointIndex = len(self.adjacencyList) - 1
-        x, y = point.getX(), point.getY()
         for direction in directions:
-            xAdjacent, yAdjacent = self.__parseDirections(direction, x, y)
+            adjacentCoord = point.getAdjacent(direction)
             try:
-                if xAdjacent > 0 and yAdjacent > 0:
-                    adjacentPoint = pathMatrix.getPoint(xAdjacent, yAdjacent)
-                    if adjacentPoint != None:
-                        self.__addEdge(currentPointIndex, adjacentPoint)
+                if adjacentCoord.getX() > 0 and adjacentCoord.getY() > 0:
+                    adjacentPointIndex = pathMatrix.getPoint(adjacentCoord)
+                    if adjacentPointIndex != None:
+                        self.__addEdge(currentPointIndex, adjacentPointIndex)
             except:
                 pass
     
     def getList(self):
         return self.adjacencyList
 
-    def __addEdge(self, currentPointIndex, adjacentPoint):
-        self.adjacencyList[currentPointIndex][1].append(adjacentPoint)
-        self.adjacencyList[adjacentPoint][1].append(currentPointIndex)
-
-    @staticmethod
-    def __parseDirections(d, x, y):
-        directions = {
-            'D': [x, y + 1],
-            'U': [x, y - 1],
-            'R': [x + 1, y],
-            'L': [x - 1, y]
-        }
-        return directions[d]
+    def __addEdge(self, currentPointIndex, adjacentPointIndex):
+        self.adjacencyList[currentPointIndex][1].append(adjacentPointIndex)
+        self.adjacencyList[adjacentPointIndex][1].append(currentPointIndex)

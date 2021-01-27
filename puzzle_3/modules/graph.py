@@ -9,10 +9,10 @@ class Graph:
         self.endPoints = endPoints
 
     def setGraph(self, neuralStrand):
-        point = Coordinate(neuralStrand.getX(), neuralStrand.getY())
+        startPoint = Coordinate(neuralStrand.getX(), neuralStrand.getY())
         path = neuralStrand.getPath()
-        self.addPointToGraph(point)
-        self.addPathToGraph(path, point)
+        self.addPointToGraph(startPoint)
+        self.addPathToGraph(path, startPoint)
     
     def addPointToGraph(self, point):
         self.pathMatrix.expandToXY(point)
@@ -42,17 +42,6 @@ class Graph:
             if self.pathMatrix.getPoint(point) not in self.endPoints[step]:
                 self.endPoints[step].append(self.pathMatrix.getPoint(point))
 
-    @staticmethod
-    def __parseDirections(d, point):
-        x, y = point.getX(), point.getY()
-        directions = {
-            'D': Coordinate(x, y + 1),
-            'U': Coordinate(x, y - 1),
-            'R': Coordinate(x + 1, y),
-            'L': Coordinate(x - 1, y)
-        }
-        return directions[d]
-
 if __name__ == '__main__':
     from neuralstrand import NeuralStrand
     import csv
@@ -64,6 +53,10 @@ if __name__ == '__main__':
     graph = Graph()
     for strand in strands:
         graph.setGraph(strand)
+    
+    for adj in graph.getAdjacencyList():
+        if len(adj[1]) > 4:
+            print(adj)
    
     with open('testFile.csv', mode='w') as testFile:
         fileWriter = csv.writer(testFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)

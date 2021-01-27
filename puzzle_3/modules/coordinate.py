@@ -24,8 +24,7 @@ class Coordinate:
         }
         return directions[d]
 
-    def mapDirection(self, other):
-        print(self.x, other.x)
+    def mapDirectionFrom(self, other):
         if self.x < other.x:
             return 'L'
         elif self.x > other.x:

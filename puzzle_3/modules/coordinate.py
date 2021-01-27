@@ -23,3 +23,15 @@ class Coordinate:
             'L': Coordinate(self.x - 1, self.y)
         }
         return directions[d]
+
+    def mapDirection(self, other):
+        print(self.x, other.x)
+        if self.x < other.x:
+            return 'L'
+        elif self.x > other.x:
+            return 'R'
+        else:
+            if self.y < other.y:
+                return 'U'
+            elif self.y > other.y:
+                return 'D'

@@ -78,7 +78,7 @@ if __name__ == '__main__':
     from neuralstrand import NeuralStrand
     from graph import Graph
 
-    f = open("puzzle3.txt", "r")
+    f = open('puzzle3.txt', 'r')
 
     strands = []
     for line in f:

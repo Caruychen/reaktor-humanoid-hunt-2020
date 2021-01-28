@@ -29,7 +29,7 @@ class NeuralStrand:
         return self.start[1]
 
 if __name__ == '__main__':
-    f = open("puzzle3.txt", "r")
+    f = open('puzzle3.txt', 'r')
     strands = []
     for line in f:
         strand = NeuralStrand(line)

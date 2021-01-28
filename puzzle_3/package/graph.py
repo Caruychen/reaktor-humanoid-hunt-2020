@@ -43,7 +43,7 @@ class Graph:
 if __name__ == '__main__':
     from neuralstrand import NeuralStrand
     import csv
-    f = open("puzzle3.txt", "r")
+    f = open('puzzle3.txt', 'r')
     strands = []
     for line in f:
         strand = NeuralStrand(line)

@@ -1,4 +1,4 @@
-from coordinate import Coordinate
+from sub_pkg.coordinate import Coordinate
 
 class BreadthFirstPaths:
     def __init__(self, graph):

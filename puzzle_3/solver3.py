@@ -1,3 +1,11 @@
+import sys, os
+if sys.version_info[0] < 3:
+    raise Exception("Please use Python 3 to import packages")
+
+pathname = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(1, pathname + '/pkg')
+sys.path.insert(1, pathname + '/pkg/sub_pkg')
+
 from pkg.neuralstrand import NeuralStrand
 from pkg.graph import Graph
 from pkg.breadthfirstpaths import BreadthFirstPaths
@@ -21,8 +29,9 @@ def getAnswers(inputFile):
     return processGraph(graph)
 
 if __name__ == '__main__':
-    with open('puzzle3.txt', 'r') as inputFile:
+    with open(pathname + '/puzzle3.txt', 'r') as inputFile:
         answers = getAnswers(inputFile)
-        with open('solutions.txt', mode='w') as solutions:
+        print('Writing answers to ' + pathname + '/solutions.txt...')
+        with open(pathname + '/solutions.txt', mode='w') as solutions:
             for answer in answers:
                 solutions.write(answer + '\n')

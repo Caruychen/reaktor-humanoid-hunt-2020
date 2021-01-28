@@ -1,7 +1,7 @@
-from pathmatrix import PathMatrix
-from adjacencylist import AdjacencyList
-from endpoints import EndPoints
-from coordinate import Coordinate
+from sub_pkg.pathmatrix import PathMatrix
+from sub_pkg.adjacencylist import AdjacencyList
+from sub_pkg.endpoints import EndPoints
+from sub_pkg.coordinate import Coordinate
 
 class Graph:
     def __init__(self):

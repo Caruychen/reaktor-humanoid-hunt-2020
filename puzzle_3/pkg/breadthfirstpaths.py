@@ -83,14 +83,18 @@ if __name__ == '__main__':
     ]
     testCompletePath = ['2,0 R,R,D,D', '2,0 R,R,D,D,R,D']
 
-    strands = []
-    for line in testInput:
-        strand = NeuralStrand(line)
-        strands.append(strand)
-        
-    graph = Graph()
-    for strand in strands:
-        graph.setGraph(strand)
-    bfPath = BreadthFirstPaths(graph)
-    print(bfPath.getPaths())
+    def setStrands(testInput):
+        strands = []
+        for line in testInput:
+            strand = NeuralStrand(line)
+            strands.append(strand)
+        return strands
+    
+    def setGraph(strands):
+        graph = Graph()
+        for strand in strands:
+            graph.setGraph(strand)
+        return graph
+
+    bfPath = BreadthFirstPaths(setGraph(setStrands(testInput)))
     assert(bfPath.getPaths() == testCompletePath)

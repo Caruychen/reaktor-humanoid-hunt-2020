@@ -1,6 +1,3 @@
-f = open("puzzle2.txt", "r")
-signal = f.read()
-
 def getCharFrequencies(signal):
     charCount = {}
     for char in signal:
@@ -32,15 +29,16 @@ def getSubsequentCharsDict(signal):
     return subCharsLists
 
 def findBaseValue(signal):
-    totalFrequency = getCharFrequencies(signal)
+    charFrequencies = getCharFrequencies(signal)
     subCharDict = getSubsequentCharsDict(signal)
-    currentChar = getMostFrequentChar(totalFrequency)
+    currentChar = getMostFrequentChar(charFrequencies)
     password = currentChar
     while currentChar != ";":
         currentChar = getMostFrequentChar(subCharDict[currentChar])
         password += currentChar
     return password
 
-print(findBaseValue(signal))
-
-f.close()
+if __name__ == '__main__':
+    with open('puzzle2.txt', 'r') as inputFile:
+        signal = inputFile.read()
+        print('Password is: ' + findBaseValue(signal))

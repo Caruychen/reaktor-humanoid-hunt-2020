@@ -1,3 +1,6 @@
+import os
+pathname = os.path.dirname(os.path.abspath(__file__))
+
 def getCharFrequencies(signal):
     charCount = {}
     for char in signal:
@@ -39,6 +42,10 @@ def findBaseValue(signal):
     return password
 
 if __name__ == '__main__':
-    with open('puzzle2.txt', 'r') as inputFile:
+    with open(pathname + '/puzzle2.txt', 'r') as inputFile:
         signal = inputFile.read()
-        print('Password is: ' + findBaseValue(signal))
+        answer = findBaseValue(signal)
+        print('Password is: ' + answer)
+
+        with open(pathname + '/solution.txt', mode='w') as solution:
+            solution.write(answer + '\n')

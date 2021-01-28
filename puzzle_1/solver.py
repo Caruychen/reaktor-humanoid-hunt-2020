@@ -1,6 +1,3 @@
-import os
-pathname = os.path.dirname(os.path.abspath(__file__))
-
 def parseLineToBitArray(line):
     bitArray = [int(el) for el in line.strip()]
     return bitArray
@@ -47,6 +44,9 @@ def findPassword(file):
     return password
 
 if __name__ == '__main__':
+    import os
+    pathname = os.path.dirname(os.path.abspath(__file__))
+    
     with open('puzzle1.txt', 'r') as inputFile:
         password = findPassword(inputFile)
         print('Password is: ' + password)

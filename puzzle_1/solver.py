@@ -1,7 +1,19 @@
 import os
 pathname = os.path.dirname(os.path.abspath(__file__))
 
-def getbytes(bits):
+def parseLineToBitArray(line):
+    bitArray = [int(el) for el in line.strip()]
+    return bitArray
+
+def getByteArray(bitArray):
+    return [byte for byte in convertBitsToByte(iter(bitArray))]
+
+def getCharInLine(byteArray):
+    for byte in byteArray:
+        if isByteValid(byte, byteArray):
+            return(followUntilInvalid(byte, byteArray))
+
+def convertBitsToByte(bits):
     done = False
     while not done:
         byte = 0
@@ -15,30 +27,15 @@ def getbytes(bits):
         if done == False:
             yield byte
 
-
-def parseLineToBitArray(line):
-    bitArray = [int(el) for el in line.strip()]
-    return bitArray
-
-def getByteArray(bitArray):
-    return [byte for byte in getbytes(iter(bitArray))]
-
 def isByteValid(byte, array):
     return byte < len(array)
 
 def followUntilInvalid(byte, byteArray):
-    # print('following: ', byte)
     if isByteValid(byte, byteArray):
         newByte = byteArray[byte]
         return followUntilInvalid(newByte, byteArray)
     else:
         return byte
-
-def getCharInLine(byteArray):
-    for byte in byteArray:
-        if isByteValid(byte, byteArray):
-            # print('valid byte: ', byte)
-            return(followUntilInvalid(byte, byteArray))
 
 def findPassword(file):
     password = ''

@@ -1,9 +1,9 @@
 class AdjacencyList:
     '''
     Maintains an indexed list of coordinates and adjacency lists:
-        [(x,y), [adjacencies, ...], ...]
-    Each element holds coordinates of its corresponding pointon the path matrix,
-    and setting adjacencies adds parallel edges for each point adjacent to each other.
+        [(x,y), [adjacencyIndex, ...], ...]
+    Each element is a point on the path matrix, and holds its correspondnig coordinates.
+    Setting adjacencies adds to the adjacency list of each point with a parallel adjacency.
     '''
 
     def __init__(self):
@@ -18,14 +18,9 @@ class AdjacencyList:
         currentIndex = len(self.adjacencyList) - 1
         for direction in directions:
             adjacentPoint = point.getAdjacentCoordinate(direction)
-            x, y = adjacentPoint.getX(), adjacentPoint.getY()
-            try:
-                if x > 0 and y > 0:
-                    adjacentIndex = pathMatrix.getIndex(adjacentPoint)
-                    if adjacentIndex != None:
-                        self.__addEdge(currentIndex, adjacentIndex)
-            except:
-                pass
+            if self.__isValidAdjacency(adjacentPoint, pathMatrix):
+                adjacentIndex = pathMatrix.getIndex(adjacentPoint)
+                self.__addEdge(currentIndex, adjacentIndex)
     
     def getList(self):
         return self.adjacencyList
@@ -33,3 +28,8 @@ class AdjacencyList:
     def __addEdge(self, currentIndex, adjacentIndex):
         self.adjacencyList[currentIndex][1].append(adjacentIndex)
         self.adjacencyList[adjacentIndex][1].append(currentIndex)
+    
+    def __isValidAdjacency(self, adjacentPoint, pathMatrix):
+        x, y = adjacentPoint.getX(), adjacentPoint.getY()
+        adjacentIndex = pathMatrix.getIndex(adjacentPoint)
+        return x >= 0 and y >= 0 and adjacentIndex != None

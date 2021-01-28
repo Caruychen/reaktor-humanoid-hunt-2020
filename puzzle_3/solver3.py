@@ -10,6 +10,7 @@ from pkg.neuralstrand import NeuralStrand
 from pkg.graph import Graph
 from pkg.breadthfirstpaths import BreadthFirstPaths
 
+
 def parseNeuralStrands(inputFile):
     return [NeuralStrand(line) for line in inputFile]
 
@@ -32,6 +33,7 @@ if __name__ == '__main__':
     with open(pathname + '/puzzle3.txt', 'r') as inputFile:
         answers = getAnswers(inputFile)
         print('Writing answers to ' + pathname + '/solutions.txt...')
+        print(answers)
         with open(pathname + '/solutions.txt', mode='w') as solutions:
             for answer in answers:
                 solutions.write(answer + '\n')

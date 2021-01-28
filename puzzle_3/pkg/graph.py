@@ -4,6 +4,11 @@ from sub_pkg.endpoints import EndPoints
 from sub_pkg.coordinate import Coordinate
 
 class Graph:
+    '''
+    Complete graph representation holding the adjacency list, 2D path matrix, and end point collections
+    Adjacency list allows search algorithm to find a path by iterating over adjacencies to each point.
+    Path matrix is mainly used internally to validate adjacencies.
+    '''
     def __init__(self):
         self.adjacencyList = AdjacencyList()
         self.pathMatrix = PathMatrix()
@@ -18,18 +23,20 @@ class Graph:
     def addPointToGraph(self, point):
         self.pathMatrix.expandToXY(point)
         if self.pathMatrix.getIndex(point) == None:
-            self.pathMatrix.setIndex(point, len(self.adjacencyList.getList()))
+            newAdjacencyIndex = len(self.adjacencyList.getList())
+            self.pathMatrix.setIndex(point, newAdjacencyIndex)
             self.adjacencyList.setPoint(point)
             self.adjacencyList.setAdjacencies(point, self.pathMatrix)
     
     def addPathToGraph(self, path, point):
+        directions = ['D','U','R','L']
         for step in path:
-            try:
+            if step in directions:
                 point = point.getAdjacentCoordinate(step)
                 self.addPointToGraph(point)
-            except:
-                pointIndex = self.pathMatrix.getIndex(point)
-                self.endPoints.setEndPoint(step, pointIndex)
+            else:
+                endIndex = self.pathMatrix.getIndex(point)
+                self.endPoints.setEndPoint(step, endIndex)
 
     def getPathMatrix(self):
         return self.pathMatrix.getMatrix()
@@ -39,6 +46,7 @@ class Graph:
 
     def getEndPoints(self):
         return self.endPoints.getEndPoints()
+
 
 if __name__ == '__main__':
     from neuralstrand import NeuralStrand
@@ -53,16 +61,17 @@ if __name__ == '__main__':
         [None, None, None, 7, 6]
     ]
     testAdjacencies = [
-        [(0, 0), []],
-        [(1, 0), []],
-        [(2, 0), []], 
-        [(3, 0), []], 
-        [(4, 0), []], 
-        [(4, 1), [6, 8]], 
-        [(4, 2), [5, 7]], 
-        [(3, 2), [6, 8]], 
-        [(3, 1), [7, 5, 9]], 
-        [(2, 1), [8]]]
+        [(0, 0), [1]],
+        [(1, 0), [0, 2]],
+        [(2, 0), [1, 3, 9]],
+        [(3, 0), [2, 4, 8]],
+        [(4, 0), [3, 5]],
+        [(4, 1), [4, 6, 8]],
+        [(4, 2), [5, 7]],
+        [(3, 2), [6, 8]],
+        [(3, 1), [7, 3, 5, 9]],
+        [(2, 1), [2, 8]]
+    ]
 
     def setStrands(testInput):
         strands = []

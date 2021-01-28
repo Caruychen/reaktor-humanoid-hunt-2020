@@ -7,9 +7,6 @@ class Coordinate:
         self.x = x
         self.y = y
     
-    def getXY(self):
-        return (self.x, self.y)
-
     def getX(self):
         return self.x
     

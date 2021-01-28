@@ -1,4 +1,9 @@
 class PathMatrix:
+    '''
+    Holds a 2 dimensional matrix mapping the entire neural path.
+    Maps each adjacencyList index to a corresponding x, y coordinate in this matrix
+    '''
+
     def __init__(self):
         self.pathMatrix = []
 
@@ -15,7 +20,8 @@ class PathMatrix:
 
     def getIndex(self, point):
         y, x = point.getY(), point.getX()
-        return self.pathMatrix[y][x]
+        if len(self.pathMatrix) > y and len(self.pathMatrix[y]) > x:
+            return self.pathMatrix[y][x]
     
     def getMatrix(self):
         return self.pathMatrix

@@ -37,6 +37,7 @@ class NeuralStrand:
     def getY(self):
         return self.start[1]
 
+
 if __name__ == '__main__':
     testInput = [
         '20,60 U,U,L,U,R,R,U,R,D,D,R,D,L,D,R,R,R,R,U,R,R,R,R,R,R,R,D',

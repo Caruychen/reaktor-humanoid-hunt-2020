@@ -43,7 +43,7 @@ class Graph:
 if __name__ == '__main__':
     from neuralstrand import NeuralStrand
     import csv
-    f = open('puzzle3.txt', 'r')
+    f = open('../puzzle3.txt', 'r')
     strands = []
     for line in f:
         strand = NeuralStrand(line)
@@ -56,7 +56,3 @@ if __name__ == '__main__':
         if len(adj[1]) > 4:
             print(adj)
    
-    with open('testFile.csv', mode='w') as testFile:
-        fileWriter = csv.writer(testFile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
-        fileWriter.writerows(graph.pathMatrix.pathMatrix)

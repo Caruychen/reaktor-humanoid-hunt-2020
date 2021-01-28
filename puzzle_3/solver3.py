@@ -1,6 +1,6 @@
-from package.neuralstrand import NeuralStrand
-from package.graph import Graph
-from package.breadthfirstpaths import BreadthFirstPaths
+from pkg.neuralstrand import NeuralStrand
+from pkg.graph import Graph
+from pkg.breadthfirstpaths import BreadthFirstPaths
 
 def parseNeuralStrands(inputFile):
     return [NeuralStrand(line) for line in inputFile]

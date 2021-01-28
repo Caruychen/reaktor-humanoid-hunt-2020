@@ -1,6 +1,14 @@
 from sub_pkg.coordinate import Coordinate
 
 class BreadthFirstPaths:
+    '''
+    Breadth first search finds the shortest path to each finish point.
+    Visits each unmarked point in adjacency array, adds them to a queue, marks the point and stores
+    the point that it reached the current point from in the edgeTo array. The complete working path
+    is found by travering the edgeTo array from point 'F' to 'S'.
+    Complete working paths are stored in the paths array.
+    '''
+
     def __init__(self, graph):
         self.marked = []
         self.edgeTo = []

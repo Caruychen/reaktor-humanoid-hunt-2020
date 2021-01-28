@@ -1,7 +1,7 @@
 f = open("puzzle2.txt", "r")
 signal = f.read()
 
-def getFrequencyDict(signal):
+def getCharFrequencies(signal):
     charCount = {}
     for char in signal:
         if char in charCount:
@@ -11,7 +11,7 @@ def getFrequencyDict(signal):
             charCount[char] = 1
     return charCount
 
-def getMaxFromDict(frequencyDict):
+def getMostFrequentChar(frequencyDict):
     maxValue = max(frequencyDict.values())
     maxKeys = [k for k, v in frequencyDict.items() if v == maxValue]
     return maxKeys[0]
@@ -31,16 +31,16 @@ def getSubsequentCharsDict(signal):
         previousChar = currentChar
     return subCharsLists
 
-def getBaseValue(signal):
-    totalFrequency = getFrequencyDict(signal)
+def findBaseValue(signal):
+    totalFrequency = getCharFrequencies(signal)
     subCharDict = getSubsequentCharsDict(signal)
-    currentChar = getMaxFromDict(totalFrequency)
+    currentChar = getMostFrequentChar(totalFrequency)
     password = currentChar
     while currentChar != ";":
-        currentChar = getMaxFromDict(subCharDict[currentChar])
+        currentChar = getMostFrequentChar(subCharDict[currentChar])
         password += currentChar
     return password
 
-print(getBaseValue(signal))
+print(findBaseValue(signal))
 
 f.close()

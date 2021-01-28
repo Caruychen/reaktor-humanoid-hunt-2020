@@ -74,7 +74,6 @@ class BreadthFirstPaths:
         return path[-1][0] == endPoints['S'][0]
 
 if __name__ == '__main__':
-    import csv
     from neuralstrand import NeuralStrand
     from graph import Graph
 

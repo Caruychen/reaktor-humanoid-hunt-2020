@@ -1,4 +1,8 @@
 class EndPoints:
+    ''' 
+    Holds a collection of point indices at the X (wall), F (finishing point)
+    and S (start point) locations.
+    '''
     def __init__(self):
         self.endPoints = {}
 

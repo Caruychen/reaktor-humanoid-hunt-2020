@@ -1,14 +1,23 @@
 class NeuralStrand:
-    def __init__(self, inputLine=''):
+    ''' Splits the starting point and path of the neural strand, and converts them to arrays '''
+
+    def __init__(self, inputLine):
         self.setStrand(inputLine)
 
     def setStrand(self, inputLine):
+        if len(inputLine) == 0:
+            raise Exception("Input line is empty!")
+
         splitLine = inputLine.strip().split(' ')
         self.__setStart(splitLine)
         self.__setPath(splitLine)
 
     def __setStart(self, splitLine):
-        self.start = [int(coordinate) for coordinate in splitLine[0].split(',')]
+        coordinates = splitLine[0].split(',')
+        if len(coordinates) < 2:
+            raise Exception("Coordinates incomplete!")
+
+        self.start = [int(coordinate) for coordinate in coordinates]
     
     def __setPath(self, splitLine):
         try:
@@ -29,12 +38,22 @@ class NeuralStrand:
         return self.start[1]
 
 if __name__ == '__main__':
-    f = open('puzzle3.txt', 'r')
-    strands = []
-    for line in f:
-        strand = NeuralStrand(line)
-        strands.append(strand)
-    print(strands[0].getStart())
-    print(strands[0].getPath())
-    print(strands[0].getX(), strands[0].getY())
+    testInput = [
+        '20,60 U,U,L,U,R,R,U,R,D,D,R,D,L,D,R,R,R,R,U,R,R,R,R,R,R,R,D',
+        '104,15'
+    ]
+
+    def parse(input):
+        strands = []
+        for line in input:
+            strand = NeuralStrand(line)
+            strands.append(strand)
+        return strands
+
+    strands = parse(testInput)
+    assert(strands[0].getStart() == [20,60])
+    assert(strands[0].getPath() == ['U','U','L','U','R','R','U','R','D','D','R','D','L','D'
+                                    ,'R','R','R','R','U','R','R','R','R','R','R','R','D'])
+    assert(strands[1].getStart() == [104,15])
+    assert(strands[1].getPath() == '')
     

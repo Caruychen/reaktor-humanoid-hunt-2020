@@ -1,6 +1,6 @@
 import sys, os
 if sys.version_info[0] < 3:
-    raise Exception("Please use Python 3 to import packages")
+    raise Exception("Please use Python 3")
 
 pathname = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(1, pathname + '/pkg')

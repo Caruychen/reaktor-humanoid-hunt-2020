@@ -44,8 +44,8 @@ def findBaseValue(signal):
 if __name__ == '__main__':
     with open(pathname + '/puzzle2.txt', 'r') as inputFile:
         signal = inputFile.read()
-        answer = findBaseValue(signal)
-        print('Password is: ' + answer)
+        password = findBaseValue(signal)
+        print('Password is: ' + password)
 
         with open(pathname + '/solution.txt', mode='w') as solution:
-            solution.write(answer + '\n')
+            solution.write(password + '\n')

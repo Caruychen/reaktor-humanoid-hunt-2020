@@ -1,4 +1,5 @@
-f = open("puzzle1.txt", "r")
+import os
+pathname = os.path.dirname(os.path.abspath(__file__))
 
 def getbytes(bits):
     done = False
@@ -48,8 +49,10 @@ def findPassword(file):
         password = password + chr(char)
     return password
 
-password = findPassword(f)
-print(password)
+if __name__ == '__main__':
+    with open('puzzle1.txt', 'r') as inputFile:
+        password = findPassword(inputFile)
+        print('Password is: ' + password)
 
-
-f.close()
+        with open(pathname + '/solution.txt', mode='w') as solution:
+            solution.write(password + '\n')
